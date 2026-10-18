@@ -14,18 +14,35 @@
         .container { max-width: 900px; margin: 30px auto; background-color: var(--card-bg); padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .section { display: none; }
         .section.active { display: block; }
-        h2 { color: var(--primary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 10px; margin-top: 30px; }
+        
+        .header-wrap { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--secondary-color); padding-bottom: 10px; margin-top: 30px; }
+        .header-wrap h2 { margin: 0; color: var(--primary-color); border: none; padding: 0; }
+        
+        .like-btn { background-color: #ff6b81; color: white; border: none; padding: 8px 16px; font-size: 14px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: background 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .like-btn:hover { background-color: #ff4757; }
+        .like-btn:active { transform: scale(0.95); }
+
         h3 { color: #333; margin-top: 25px; }
         .form-group { margin-bottom: 20px; }
         input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: inherit; }
-        button.submit-btn { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; display: block; width: 100%; margin-top: 10px; }
+        button.submit-btn { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; font-size: 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
         button.submit-btn:hover { background-color: #357ABD; }
-        .iframe-container { width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+        
+        .iframe-container { width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; overflow: hidden; background-color: #fff; }
         .iframe-container iframe { width: 100%; height: 100%; border: none; }
         .code-image { width: 100%; max-height: 400px; object-fit: contain; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; background-color: #f9f9f9; }
         .popup-btn { background-color: #333; color: white; border: none; padding: 12px 20px; font-size: 15px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; }
         .popup-btn:hover { background-color: #555; }
-        .debugging-board { background-color: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 30px; border-left: 5px solid #ffecb5; }
+        
+        /* Debugging Board Styles */
+        .debugging-board { background-color: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 5px solid #ffecb5; }
+        .comment-list { list-style: none; padding: 0; margin: 15px 0; max-height: 250px; overflow-y: auto; background: #fff; border-radius: 5px; border: 1px solid #ddd; }
+        .comment-item { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        .comment-item:last-child { border-bottom: none; }
+        .comment-item .meta { font-size: 12px; color: #888; margin-bottom: 4px; }
+        .comment-item .meta strong { color: #333; font-size: 13px; }
+        .comment-item p { margin: 0; font-size: 14px; color: #444; }
+        .input-area { display: flex; gap: 10px; }
     </style>
 </head>
 <body>
@@ -35,15 +52,18 @@
     </header>
 
     <nav>
-        <button class="tab-link active" onclick="openTab('proj1')">학생작품1</button>
-        <button class="tab-link" onclick="openTab('proj2')">학생작품2</button>
-        <button class="tab-link" onclick="openTab('proj3')">학생작품3</button>
+        <button class="tab-link active" onclick="openTab('proj1')">모둠작품1</button>
+        <button class="tab-link" onclick="openTab('proj2')">모둠작품2</button>
+        <button class="tab-link" onclick="openTab('proj3')">모둠작품3</button>
     </nav>
 
     <div class="container">
-        <!-- 학생작품1 -->
+        <!-- 모둠작품1 -->
         <div id="proj1" class="section active">
-            <h2>학생작품1 시연 및 디버깅</h2>
+            <div class="header-wrap">
+                <h2>모둠작품1 시연 및 디버깅</h2>
+                <button class="like-btn" onclick="addLike(1)">❤️ 좋아요 <span id="like-count-1">0</span></button>
+            </div>
             
             <h3>▶ 프로그램 실행 화면</h3>
             <div class="iframe-container">
@@ -51,24 +71,32 @@
             </div>
 
             <h3>💻 블록 코드 보기</h3>
-            <img src="1.png" alt="학생작품1 코드 이미지" class="code-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+1.png+not+found'">
+            <img src="1.png" alt="모둠작품1 코드 이미지" class="code-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+1.png+not+found'">
             <button class="popup-btn" onclick="openCodePopup('https://playentry.org/ws/6ad4233780216b763f6d1126?type=normal&mode=block&lang=ko')">
                 새 창(팝업)에서 전체 코드 보기 및 수정하기
             </button>
 
             <div class="debugging-board">
-                <h3>🛠️ 디버깅 게시판</h3>
-                <p>실행 중 발견한 오류나 고치면 좋을 점을 남겨주세요.</p>
-                <div class="form-group">
-                    <input type="text" placeholder="예: 카메라 인식이 너무 느려요. 블록 순서를 바꿔보면 어떨까요?" id="qna-input-1">
+                <h3 style="margin-top:0;">🛠️ 디버깅 게시판</h3>
+                <p style="font-size:14px; color:#555;">실행 중 발견한 오류나 고치면 좋을 점을 남겨주세요.</p>
+                
+                <ul id="comment-list-1" class="comment-list">
+                    <!-- 댓글이 여기에 누적됩니다 -->
+                </ul>
+
+                <div class="input-area">
+                    <input type="text" placeholder="의견을 남겨주세요..." id="qna-input-1" onkeypress="if(event.key === 'Enter') addComment(1)">
+                    <button class="submit-btn" style="width: 80px;" onclick="addComment(1)">등록</button>
                 </div>
-                <button class="submit-btn" onclick="alert('디버깅 의견이 등록되었습니다!')">의견 남기기</button>
             </div>
         </div>
 
-        <!-- 학생작품2 -->
+        <!-- 모둠작품2 -->
         <div id="proj2" class="section">
-            <h2>학생작품2 시연 및 디버깅</h2>
+            <div class="header-wrap">
+                <h2>모둠작품2 시연 및 디버깅</h2>
+                <button class="like-btn" onclick="addLike(2)">❤️ 좋아요 <span id="like-count-2">0</span></button>
+            </div>
             
             <h3>▶ 프로그램 실행 화면</h3>
             <div class="iframe-container">
@@ -76,23 +104,30 @@
             </div>
 
             <h3>💻 블록 코드 보기</h3>
-            <img src="2.png" alt="학생작품2 코드 이미지" class="code-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+2.png+not+found'">
+            <img src="2.png" alt="모둠작품2 코드 이미지" class="code-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+2.png+not+found'">
             <button class="popup-btn" onclick="openCodePopup('https://playentry.org/ws/6ad423693c266ef5c93bdf7c?type=normal&mode=block&lang=ko')">
                 새 창(팝업)에서 전체 코드 보기 및 수정하기
             </button>
 
             <div class="debugging-board">
-                <h3>🛠️ 디버깅 게시판</h3>
-                <div class="form-group">
-                    <input type="text" placeholder="예: 버튼을 눌렀을 때 다음 화면으로 넘어가지 않아요." id="qna-input-2">
+                <h3 style="margin-top:0;">🛠️ 디버깅 게시판</h3>
+                <p style="font-size:14px; color:#555;">실행 중 발견한 오류나 고치면 좋을 점을 남겨주세요.</p>
+                
+                <ul id="comment-list-2" class="comment-list"></ul>
+
+                <div class="input-area">
+                    <input type="text" placeholder="의견을 남겨주세요..." id="qna-input-2" onkeypress="if(event.key === 'Enter') addComment(2)">
+                    <button class="submit-btn" style="width: 80px;" onclick="addComment(2)">등록</button>
                 </div>
-                <button class="submit-btn" onclick="alert('디버깅 의견이 등록되었습니다!')">의견 남기기</button>
             </div>
         </div>
 
-        <!-- 학생작품3 -->
+        <!-- 모둠작품3 -->
         <div id="proj3" class="section">
-            <h2>학생작품3 시연 및 디버깅</h2>
+            <div class="header-wrap">
+                <h2>모둠작품3 시연 및 디버깅</h2>
+                <button class="like-btn" onclick="addLike(3)">❤️ 좋아요 <span id="like-count-3">0</span></button>
+            </div>
             
             <h3>▶ 프로그램 실행 화면</h3>
             <div class="iframe-container">
@@ -100,23 +135,28 @@
             </div>
 
             <h3>💻 블록 코드 보기</h3>
-            <img src="3.png" alt="학생작품3 코드 이미지" class="code-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+3.png+not+found'">
+            <img src="3.png" alt="모둠작품3 코드 이미지" class="code-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+3.png+not+found'">
             <button class="popup-btn" onclick="openCodePopup('https://playentry.org/ws/6ad4234f80216b763f6d1182?type=normal&mode=block&lang=ko')">
                 새 창(팝업)에서 전체 코드 보기 및 수정하기
             </button>
 
             <div class="debugging-board">
-                <h3>🛠️ 디버깅 게시판</h3>
-                <div class="form-group">
-                    <input type="text" placeholder="예: 음성 인식이 잘 안 될 때 안내 메시지가 있으면 좋겠어요." id="qna-input-3">
+                <h3 style="margin-top:0;">🛠️ 디버깅 게시판</h3>
+                <p style="font-size:14px; color:#555;">실행 중 발견한 오류나 고치면 좋을 점을 남겨주세요.</p>
+                
+                <ul id="comment-list-3" class="comment-list"></ul>
+
+                <div class="input-area">
+                    <input type="text" placeholder="의견을 남겨주세요..." id="qna-input-3" onkeypress="if(event.key === 'Enter') addComment(3)">
+                    <button class="submit-btn" style="width: 80px;" onclick="addComment(3)">등록</button>
                 </div>
-                <button class="submit-btn" onclick="alert('디버깅 의견이 등록되었습니다!')">의견 남기기</button>
             </div>
         </div>
 
     </div>
 
     <script>
+        // 탭 이동 기능
         function openTab(tabName) {
             var i;
             var x = document.getElementsByClassName("section");
@@ -129,12 +169,55 @@
             event.currentTarget.className += " active";
         }
 
+        // 팝업 창 기능
         function openCodePopup(url) {
             var popupWidth = 1000;
             var popupHeight = 700;
             var left = (window.screen.width / 2) - (popupWidth / 2);
             var top = (window.screen.height / 2) - (popupHeight / 2);
             window.open(url, 'EntryCodeWindow', 'width=' + popupWidth + ',height=' + popupHeight + ',left=' + left + ',top=' + top + ',resizable=yes,scrollbars=yes');
+        }
+
+        // 좋아요 기능
+        let likes = { 1: 0, 2: 0, 3: 0 };
+        function addLike(id) {
+            likes[id]++;
+            document.getElementById('like-count-' + id).innerText = likes[id];
+            
+            // 클릭 효과
+            const btn = event.currentTarget;
+            btn.style.transform = 'scale(1.1)';
+            setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
+        }
+
+        // 디버깅 게시판 댓글 기능
+        function addComment(id) {
+            const inputField = document.getElementById('qna-input-' + id);
+            const text = inputField.value.trim();
+            
+            if (!text) {
+                alert("의견을 입력해주세요.");
+                return;
+            }
+
+            const list = document.getElementById('comment-list-' + id);
+            const newItem = document.createElement('li');
+            newItem.className = 'comment-item';
+            
+            // 현재 시간 구하기
+            const now = new Date();
+            const timeString = now.getHours() + ":" + String(now.getMinutes()).padStart(2, '0');
+            
+            newItem.innerHTML = `
+                <div class="meta"><strong>익명 사용자</strong> ${timeString}</div>
+                <p>${text}</p>
+            `;
+            
+            list.appendChild(newItem); // 댓글 추가
+            inputField.value = ''; // 입력창 비우기
+            
+            // 스크롤 맨 아래로 이동
+            list.scrollTop = list.scrollHeight;
         }
     </script>
 </body>
